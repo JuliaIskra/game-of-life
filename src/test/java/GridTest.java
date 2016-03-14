@@ -35,7 +35,7 @@ public class GridTest {
         //-----
         //---**
         //---**
-        List<Coordinates> coordinates = Arrays.asList(
+        grid.markAsAlive(
                 new Coordinates(0, 0),
                 new Coordinates(0, 1),
                 new Coordinates(1, 0),
@@ -43,7 +43,6 @@ public class GridTest {
                 new Coordinates(3, 4),
                 new Coordinates(4, 3),
                 new Coordinates(4, 4));
-        grid.markAsAlive(coordinates.toArray(new Coordinates[coordinates.size()]));
         Grid newGrid = grid.tick();
         assertEquals(ALIVE, newGrid.get(new Coordinates(0, 0)));
         assertEquals(ALIVE, newGrid.get(new Coordinates(3, 3)));
@@ -53,13 +52,12 @@ public class GridTest {
     public void testOverPopulation() {
         //***
         //**
-        List<Coordinates> coordinates = Arrays.asList(
+        grid.markAsAlive(
                 new Coordinates(1, 1),
                 new Coordinates(1, 2),
                 new Coordinates(1, 3),
                 new Coordinates(2, 1),
                 new Coordinates(2, 2));
-        grid.markAsAlive(coordinates.toArray(new Coordinates[coordinates.size()]));
         Grid newGrid = grid.tick();
         assertEquals(DEAD, newGrid.get(new Coordinates(2, 2)));
     }
@@ -68,11 +66,10 @@ public class GridTest {
     public void testReproduction() {
         //**
         //*
-        List<Coordinates> coordinates = Arrays.asList(
+        grid.markAsAlive(
                 new Coordinates(1, 1),
                 new Coordinates(1, 2),
                 new Coordinates(2, 1));
-        grid.markAsAlive(coordinates.toArray(new Coordinates[coordinates.size()]));
         Grid newGrid = grid.tick();
         assertEquals(ALIVE, newGrid.get(new Coordinates(2, 2)));
     }

@@ -118,12 +118,26 @@ public class Grid {
     }
 
     private int calculateIndex(Coordinates c) {
-        return c.getX() * size + c.getY();
+        return c.getY() * size + c.getX();
     }
 
     private Coordinates calculateCoordinates(int index) {
-        int x = index / size;
-        int y = index % size;
+        int x = index % size;
+        int y = index / size;
         return new Coordinates(x, y);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder output = new StringBuilder();
+        int index = 0;
+        while (index < array.length) {
+            for (int x = 0; x < size; x++) {
+                output.append(array[index]).append(" ");
+                index++;
+            }
+            output.append("\n");
+        }
+        return output.toString();
     }
 }
