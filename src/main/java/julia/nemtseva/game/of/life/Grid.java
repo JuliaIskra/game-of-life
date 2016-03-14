@@ -2,6 +2,7 @@ package julia.nemtseva.game.of.life;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
+import java.util.List;
 
 import static julia.nemtseva.game.of.life.CellState.ALIVE;
 import static julia.nemtseva.game.of.life.CellState.DEAD;
@@ -10,14 +11,13 @@ import static julia.nemtseva.game.of.life.CellState.DEAD;
  * @author Julia Nemtseva
  */
 public class Grid {
-    // todo remove class Cell and use CellState instead?
     private final int size;
-    private final Cell[] array;
+    private final CellState[] array;
 
     public Grid(int size) {
         this.size = size;
-        array = new Cell[size * size];
-        Arrays.fill(array, new Cell());
+        array = new CellState[size * size];
+        Arrays.fill(array, DEAD);
     }
 
     /**
@@ -25,11 +25,11 @@ public class Grid {
      */
     public void markAsAlive(Coordinates... coordinates) {
         for (Coordinates c : coordinates) {
-            Array.set(array, calculateIndex(c), new Cell(ALIVE));
+            Array.set(array, calculateIndex(c), ALIVE);
         }
     }
 
-    public Cell get(Coordinates c) {
+    public CellState get(Coordinates c) {
         return array[calculateIndex(c)];
     }
 
@@ -41,15 +41,15 @@ public class Grid {
         Grid newGrid = new Grid(size);
         for (int index = 0; index < array.length; index++) {
             CellState newState = evaluateNextState(index);
-            Array.set(newGrid.array, index, new Cell(newState));
+            Array.set(newGrid.array, index, newState);
         }
         return newGrid;
     }
 
     private CellState evaluateNextState(int index) {
-        Cell cell = array[index];
+        CellState cell = array[index];
         int aliveNeighbours = calculateAliveNeighbours(index);
-        if (cell.getState().equals(ALIVE)) {
+        if (cell.equals(ALIVE)) {
             if (aliveNeighbours < 2 || aliveNeighbours > 3) {
                 return DEAD;
             } else {
@@ -66,33 +66,32 @@ public class Grid {
 
     private int calculateAliveNeighbours(int index) {
         int aliveNeighbours = 0;
-        Cell[] neighbours = getNeighbours(index);
-        for (Cell neighbour : neighbours) {
-            if (neighbour.getState().equals(ALIVE)) {
+        List<CellState> neighbours = getNeighbours(index);
+        for (CellState neighbour : neighbours) {
+            if (neighbour.equals(ALIVE)) {
                 aliveNeighbours++;
             }
         }
         return aliveNeighbours;
     }
 
-    private Cell[] getNeighbours(int index) {
+    private List<CellState> getNeighbours(int index) {
         Coordinates c = calculateCoordinates(index);
         int x = c.getX();
         int y = c.getY();
 
-        Cell[] neighbours = new Cell[8];
-        neighbours[0] = get(x, increaseCoordinate(y));
-        neighbours[1] = get(increaseCoordinate(x), increaseCoordinate(y));
-        neighbours[2] = get(increaseCoordinate(x), y);
-        neighbours[3] = get(increaseCoordinate(x), decreaseCoordinate(y));
-        neighbours[4] = get(x, decreaseCoordinate(y));
-        neighbours[5] = get(decreaseCoordinate(x), decreaseCoordinate(y));
-        neighbours[6] = get(decreaseCoordinate(x), y);
-        neighbours[7] = get(decreaseCoordinate(x), increaseCoordinate(y));
-        return neighbours;
+        return Arrays.asList(
+                get(x, increaseCoordinate(y)),
+                get(increaseCoordinate(x), increaseCoordinate(y)),
+                get(increaseCoordinate(x), y),
+                get(increaseCoordinate(x), decreaseCoordinate(y)),
+                get(x, decreaseCoordinate(y)),
+                get(decreaseCoordinate(x), decreaseCoordinate(y)),
+                get(decreaseCoordinate(x), y),
+                get(decreaseCoordinate(x), increaseCoordinate(y)));
     }
 
-    private Cell get(int x, int y) {
+    private CellState get(int x, int y) {
         return get(new Coordinates(x, y));
     }
 

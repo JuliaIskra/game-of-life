@@ -24,7 +24,7 @@ public class GridTest {
         grid.markAsAlive(coordinates.toArray(new Coordinates[coordinates.size()]));
         Grid newGrid = grid.tick();
         for (Coordinates c : coordinates) {
-            assertEquals(DEAD, newGrid.get(c).getState());
+            assertEquals(DEAD, newGrid.get(c));
         }
     }
 
@@ -45,8 +45,8 @@ public class GridTest {
                 new Coordinates(4, 4));
         grid.markAsAlive(coordinates.toArray(new Coordinates[coordinates.size()]));
         Grid newGrid = grid.tick();
-        assertEquals(ALIVE, newGrid.get(new Coordinates(0, 0)).getState());
-        assertEquals(ALIVE, newGrid.get(new Coordinates(3, 3)).getState());
+        assertEquals(ALIVE, newGrid.get(new Coordinates(0, 0)));
+        assertEquals(ALIVE, newGrid.get(new Coordinates(3, 3)));
     }
 
     @Test
@@ -61,7 +61,7 @@ public class GridTest {
                 new Coordinates(2, 2));
         grid.markAsAlive(coordinates.toArray(new Coordinates[coordinates.size()]));
         Grid newGrid = grid.tick();
-        assertEquals(DEAD, newGrid.get(new Coordinates(2, 2)).getState());
+        assertEquals(DEAD, newGrid.get(new Coordinates(2, 2)));
     }
 
     @Test
@@ -74,6 +74,6 @@ public class GridTest {
                 new Coordinates(2, 1));
         grid.markAsAlive(coordinates.toArray(new Coordinates[coordinates.size()]));
         Grid newGrid = grid.tick();
-        assertEquals(ALIVE, newGrid.get(new Coordinates(2, 2)).getState());
+        assertEquals(ALIVE, newGrid.get(new Coordinates(2, 2)));
     }
 }
